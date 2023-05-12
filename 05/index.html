@@ -1,64 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PHYSCI 70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div style="align-items: left; justify-content:left;" class="container-fluid">
-    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
-    </div>
-  </div>
-</nav>
-
-
+<head>
+    <title>PHYSCI 70: Intro to Digital Fabrication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
 <body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div style="align-items: left; justify-content:left;" class="container-fluid">
+            <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+            <div class="navbar-nav">
+                <h4><a class="nav-link" href="../index.html">Home</a></h4>
+                <h4><a class="nav-link" href="../about.html">About</a></h4>
+                <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+            </div>
+        </div>
+    </nav>
 
+    <center><h1>Week 5: 3D Printing</h1></center> 
 
-<xmp theme="journal" style="display:none;">
+    <p>For this week, we had to 3D print something related to our projects as well as make a 3D scan. I printed out a minature model of the cat bowl that I was going to use for my final project, and I was fairly happy with the result! To figure out how to model it in, I followed <a href="https://www.youtube.com/watch?v=aYihSHdp3js">this tutorial.</a> After watching the tutorial, I sketched out a rough guide for the bowl in procreate.</p>
 
+    <img src="./art1.png" alt="Sketch"> 
 
+    <p> After I made the sketch, I exported it to Fusion 360, then roughly sketched over it as well as moved the Fusion sketch.</p>
 
-<center><h1>Week 5: 3D Printing</h1></center> 
+    <img src="./fusionsketch1.png" alt="Fusion sketch">
 
-<p>For this week, we had to 3D print something related to our projects as well as make a 3D scan. I printed out a minature model of the cat bowl that I was going to use for my final project, and I was fairly happy with the result! To figure out how to model it in, I followed <a href="https://www.youtube.com/watch?v=aYihSHdp3js">this tutorial.</a> After watching the tutorial, I sketched out a rough guide for the bowl in procreate.</p>
+    <p>I made the sketch 3D by rotating it around the axis, and then I had the file that I could move to PrusaSlicer to then take to the printer.</p>
 
-![Sketch](./art1.png) 
+    <img src="./bowl.png" alt="Bowl">
 
-<p> After I made the sketch, I exported it to Fusion 360, then roughly sketched over it as well as moved the Fusion sketch.</p>
+    <p>I exported the <a download href="./emmabowl1.gcode">G-code</a> from PrusaSlicer, then printed it out!</p>
 
-![Fusion sketch](./fusionsketch1.png)
+    <img src="./print1.png" alt="First print">
+    <img src="./print2.png" alt="Second print">
 
-<p>I made the sketch 3D by rotating it around the axis, and then I had the file that I could move to PrusaSlicer to then take to the printer.</p>
+    <h4><center>3D scan</center></h4>
 
-![Bowl](./bowl.png)
+    <p>Well... the 3D scan went interestingly. I used an app called ScandyPro on my iPhone 11 Pro. It didn't fully scan my neck, and there were a bunch of holes. At least it looks like me...</p>
 
-<p>I exported the <a download href="./emmabowl1.gcode">G-code</a> from PrusaSlicer, then printed it out!</p>
+    <img src="./monster.jpg" alt="me">
 
-![First print](./print1.png)
-![Second print](./print2.png)
+    <p>...right?<br><br>Ignoring the scariness of it, it was pretty straight forward. The link to my file is <a download href="./me-mm.stl">here.</a></p>
 
-<h4><center>3D scan</center></h4>
-
-<p>Well... the 3D scan went interestingly. I used an app called ScandyPro on my iPhone 11 Pro. It didn't fully scan my neck, and there were a bunch of holes. At least it looks like me...</p>
-
-![me](./monster.jpg)
-
-<p>...right?<br><br>Ignoring the scariness of it, it was pretty straight forward. The link to my file is <a download href="./me-mm.stl">here.</a></p>
-
-
-
-
-</xmp>
+    <script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
