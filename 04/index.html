@@ -1,35 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PHYSCI 70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div style="align-items: left; justify-content:left;" class="container-fluid">
-    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
-    </div>
-  </div>
-</nav>
-
-
+<head>
+    <title>PHYSCI 70: Intro to Digital Fabrication </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
 <body>
-
-
-<xmp theme="journal" style="display:none;">
-
-
-
-<center><h1>4: Microcontroller programming</h1></center> 
-
-<p> This weeks assignment was to program an Arduino board to do something. I wanted to connect a button to a motor to make it run when it was pressed. I was a beginner when it came to coding in Arduino, but I was able to figure out how to use it enough in order to make the button do what I want. <br> Here's my code!</p>
-
-<pre><code>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div style="align-items: left; justify-content:left;" class="container-fluid">
+            <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+            <div class="navbar-nav">
+                <h4><a class="nav-link" href="../index.html">Home</a></h4>
+                <h4><a class="nav-link" href="../about.html">About</a></h4>
+                <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>4: Microcontroller programming</h1>
+        <p> This weeks assignment was to program an Arduino board to do something. I wanted to connect a button to a motor to make it run when it was pressed. I was a beginner when it came to coding in Arduino, but I was able to figure out how to use it enough in order to make the button do what I want. </p>
+        <p>Here's my code!</p>
+        <pre><code>
 int buttonState = digitalRead(8);
 const int A1A = 3;  // define pin 3 for A-1A 
 const int A1B = 4;  // define pin 4 for A-1B 
@@ -52,27 +43,16 @@ if (buttonState == HIGH) {
   digitalWrite(A1A, LOW);
   digitalWrite(A1B, LOW);
 }
-
 }
-</code></pre> 
-
-<p>It was really fun learning how to code this, and the sense of accomplishment I felt after learning how to do it was great. I hope to incorporate the code into my final project for the button to dispenser part. </p>
-
-
-<p> Below is a gif of my Arduino setup and how it works!</p>
-
-![Gif](./Circuit.gif)
-
-
-<p>Finally, there's the circuit diagram. I wasn't super confident on how to draw it, but in the end I managed to.</p> 
-
-![Art](./Untitled_Artwork.png)
-
-<p>Arduino was tough, but having a basic understanding of how it works is so important for my final project, and sticking it out will be worth it in the end. </p>
-</xmp>
+        </code></pre>
+        <p>It was really fun learning how to code this, and the sense of accomplishment I felt after learning how to do it was great. I hope to incorporate the code into my final project for the button to dispenser part.</p>
+        <p>Below is a gif of my Arduino setup and how it works!</p>
+        <img src="./Circuit.gif" alt="Gif">
+        <p>Finally, there's the circuit diagram. I wasn't super confident on how to draw it, but in the end I managed to.</p>
+        <img src="./Untitled_Artwork.png" alt="Art">
+        <p>Arduino was tough, but having a basic understanding of how it works is so important for my final project, and sticking it out will be worth it in the end.</p>
+    </div>
+    <script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
