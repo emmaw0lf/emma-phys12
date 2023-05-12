@@ -1,88 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<title>PHYSCI 70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div style="align-items: left; justify-content:left;" class="container-fluid">
-    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="./index.html">Home</a></h4>
-      <h4><a class="nav-link" href="./about.html">About</a></h4>
-      <h4><a class="nav-link" href="./finalproject.html">Final Project</a></h4>
-    </div>
-  </div>
-</nav>
-
+<head>
+  <title>PHYSCI 70: Intro to Digital Fabrication</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
 <body>
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container-fluid">
+      <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="./index.html">Home</a></h4>
+        <h4><a class="nav-link" href="./about.html">About</a></h4>
+        <h4><a class="nav-link" href="./finalproject.html">Final Project</a></h4>
+      </div>
+    </div>
+  </nav>
 
+  <center><h1>Final Project</h1></center> 
 
-<xmp theme="journal" style="display:none;">
+  <p>For my final project, there were quite a few things to do before I started. I needed a list of materials, a timeline, and a plan! I'm making an automatic cat feeder. <br>Here's the list of materials:</p>
 
+  <ul>
+    <li>Wood</li>
+    <li>DC motors</li>
+    <li>Round acrylic tube (pet safe!)</li>
+    <li>LCD screen</li>
+    <li>ESP board</li>
+    <li>Button</li>
+  </ul>
 
+  <p>For my timeline, I wanted the design completed by July 10th, an LCD interface and app by July 24th, and to assemble it the 29th and 30th. My progress through these steps is below:</p>
 
-<center><h1>Final Project</h1></center> 
+  <h1><center>**DESIGN**</center></h1>
 
-<p> For my final project, there were quite a bit of things to do before I started. I needed a list of materials, a timeline, and a plan! I'm making an automatic cat feeder. <br>Here's the list of materials:</p>
+  <img src="./finaldesign.png" alt="Design">
 
-<ul>
-  <li>Wood</li>
-  <li>DC motors</li>
-  <li>Round acrylic tube (pet safe!)</li>
-  <li>LCD screen</li>
-  <li>ESP board</li>
-  <li>Button</li>
-</ul>
+  <p>My dispensing mechanism was inspired by a gumball machine, and I based the design off some models I had seen online. It was fun to design, and I'm looking forward to building it!</p> 
 
-<p>For my timeline, I wanted the design completed by July 10th, an LCD interface and app by July 24th, and to assemble it the 29th and 30th. My progress through these steps are below:</p>
+  <h1><center>**CODING AND WIRING**</center></h1>
 
-<h1><center>**DESIGN**</center></h1>
+  <p>I worked on the dispensing mechanism week 10, and I used a stepper motor. Eventually, I refined it and made the code:</p>
 
-![Design](./finaldesign.png)
+  <pre style="height: 500px; overflow: scroll;">
+    <code>// Include the AccelStepper Library
+      #include &lt;AccelStepper.h&gt;
 
-<p>My dispensing mechanism was inspired by a gumball machine, and I based the design off some models I had seen online. It was fun to design, and I'm looking forward to building it!</p> 
+      // Define pin connections
+      const int stepsPerRevolution = 200;
+      const int dirPin = 12;
+      const int stepPin = 13;
+      const int ledPin = 8;
+      int rotationCW = 0;
+      int rotationCCW = 0;
+      int sensorValue = 0; //
+      int location = 1;
 
-<h1><center>**CODING AND WIRING**</center></h1>
+      // Define motor interface type
+      #define motorInterfaceType 1
 
-<p> I worked on the dispensing mechanism week 10, and I used a stepper motor. Eventually, I refined it and made the code:</p>
+      // Creates an instance
+      AccelStepper stepper(1, stepPin, dirPin); 
 
-<pre style="height: 500px; overflow: scroll;"><code>
-
-// Include the AccelStepper Library
-#include &lt;AccelStepper.h&gt;
-
-// Define pin connections
-const int stepsPerRevolution = 200;
-const int dirPin = 12;
-const int stepPin = 13;
-const int ledPin = 8;
-int rotationCW = 0;
-int rotationCCW = 0;
-int sensorValue = 0; //
-int location = 1;
-
-
-
-// Define motor interface type
-#define motorInterfaceType 1
-
-// Creates an instance
-AccelStepper stepper(1, stepPin, dirPin); 
-
-void setup() {
-  stepper.setSpeed(1500);
-  stepper.setAcceleration(1000);
-  Serial.begin(9600);
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
-  //stepper.moveTo(200);
-  pinMode(2, INPUT_PULLUP);
-  pinMode(8, OUTPUT);
-}
-
+      void setup() {
+        stepper.setSpeed(1500);
+        stepper.setAcceleration(1000);
+        Serial.begin(9600);
+        pinMode(stepPin, OUTPUT);
+        pinMode(dirPin, OUTPUT);
+        //stepper.moveTo(200);
+        pinMode(2, INPUT_PULLUP);
+        pinMode(8, OUTPUT);
+     
 
 void loop() {
 
@@ -122,58 +111,50 @@ void loop() {
 </code></pre>
 
 <p>The wiring was fairly straight forward since I already had the motor wired. Adding the button was a simple connection.</p>
-
-![wiring](./finalwiring.png)
-
-
-
-<center><h1>**ASSEMBLY & CUTTING**</h1></center> 
-
+<img src="./finalwiring.png" alt="wiring">
+<center><h1>ASSEMBLY & CUTTING</h1></center> 
 <p>This was the most time consuming part, mainly because the laser cutter was being used a lot of the time. I had to cut out the box part, a false bottom the motor would come out of, and the case to hide the wiring. I was able to print almost everything, and I connected them with hot glue. I would've used wood glue except it takes a long time to dry.</p>
-
-![finalparts](./finalparts.png)
-
+<img src="./finalparts.png" alt="final parts">
 <p>After gluing the box together and putting part of the false bottom, I had to wire the button and motor through it. I did this by drilling holes. I re-wired then mounted the metro board and breadboard onto the back, which was a bit of a pain.</p>
-
-![holes](./holesinbottom.png)
-![wiring](./mountedwiring.png)
-
+<img src="./holesinbottom.png" alt="holes">
+<img src="./mountedwiring.png" alt="wiring">
 <p>Next, I put on the back box.</p>
-
-![backwiring](./backwiring.png)
-
-<p>I had to attatch the dispensing mechanism to the motor which was a pain because the motors shaft was smooth and hot glue didn't stick. I ended up using a connecter. However, a major flaw is that the mechanism isn't level so dispensing can't be as seamless as it would otherwise. I tried for a couple hours to fix it, but I wasn't able to.</p>
-
-![motorconnect](./motorconnect.png)
-
-<p> Now, for the place where the food/cat food is held, I used a pepsi bottle because of the shape. I wish there was something more readily available that looked nicer, but it was what I could use. It wasn't too bad to work with except it isn't as clear as I would've wanted it. I wanted to make a nice lid, except I couldn't cut the top level and that made it very hard. I settled just placing wood over it, but this wouldn't keep the cat food. I hope to fix this in the future. I also had to use tape on the side for padding.</p>
-
-![lidandbottle](./lidandbottle.png)
-
-
-<center><h1>**DEMO**</h1></center> 
-
+<img src="./backwiring.png" alt="back wiring">
+<p>I had to attach the dispensing mechanism to the motor which was a pain because the motor's shaft was smooth and hot glue didn't stick. I ended up using a connector. However, a major flaw is that the mechanism isn't level so dispensing can't be as seamless as it would otherwise. I tried for a couple of hours to fix it, but I wasn't able to.</p>
+<img src="./motorconnect.png" alt="motor connection">
+<p> Now, for the place where the food/cat food is held, I used a Pepsi bottle because of the shape. I wish there was something more readily available that looked nicer, but it was what I could use. It wasn't too bad to work with except it isn't as clear as I would've wanted it. I wanted to make a nice lid, except I couldn't cut the top level and that made it very hard. I settled just placing wood over it, but this wouldn't keep the cat food. I hope to fix this in the future. I also had to use tape on the side for padding.</p>
+<img src="./lidandbottle.png" alt="lid and bottle">
+<center><h1>DEMO</h1></center> 
 <p>For the demo, I brought the feeder home to test on my cats. The lighting wasn't ideal, and I had to craft a tray because the slope I made didn't work. </p>
+<head>
+  <meta charset="utf-8">
+  <title>Reflections</title>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+</head>
 
-<div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/735652557?h=b5816c07d8&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="final.mp4"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+<body>
+<div style="padding:75% 0 0 0;position:relative;">
+  <iframe src="https://player.vimeo.com/video/735652557?h=b5816c07d8&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="final.mp4"></iframe>
+</div>
 
-<center><h1>**REFLECTIONS**</h1></center> 
-
+<center>
+  <h1>REFLECTIONS</h1>
+</center> 
 
 <p>This project was fun overall. It was a learning process, and reflecting back on it there was a lot of things I'd do differently. Maybe I'd use a waterbottle for the feeder, and also 3D print a more precise dispensing mechanism. I wish I had painted or stained the wood, but I didn't have enough time. I look forward to doing more projects in the future!</p>
 
-<center><h4><u>**DOWNLOAD CODES**</u></h4></center>
+<center>
+  <h4><u>DOWNLOAD CODES</u></h4>
+</center>
 
 <ul>
   <li><a download href="./boxpart.dxf">Box</a></li>
   <li><a download href="./buttonpiece.dxf">Button slot piece</a></li>
   <li><a download href="./falsebottom.dxf">False bottom</a></li>
   <li><a download href="./wiringbox.dxf">Wiring box</a></li>
+</ul>
 
-</xmp>
 </body>
-
-<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
