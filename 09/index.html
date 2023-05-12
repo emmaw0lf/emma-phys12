@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<title>PHYSCI 70: Intro to Digital Fabrication </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div style="align-items: left; justify-content:left;" class="container-fluid">
+    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+    <div class="navbar-nav">
+      <h4><a class="nav-link" href="../index.html">Home</a></h4>
+      <h4><a class="nav-link" href="../about.html">About</a></h4>
+      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+    </div>
+  </div>
+</nav>
+
+
+<body>
+
+
+<xmp theme="journal" style="display:none;">
+
+
+
+<center><h1>9: Radio, Wifi, and Bluetooth</h1></center> 
+
+<p>This week we needed to control a board from a local wireless network and program a microcontroller to obtain and respond to information from the internet. I wanted to make an on/off button on a website that would control a DC motor. I was a bit scared to start the assignment 
+</p>
+
+<p>First I wanted to figure out how to connect the motor to the ESP32 board. I followed <a href="http://www.esp32learning.com/code/esp32-and-l9110-fan-module-example.php"> this tutorial</a> to get a rough idea of how to wire, minus the battery, and it worked when I ran test code.</p>
+
+![circuit](./circuit.png)
+
+<p>Next, I wanted to make the website, so I followed <a href="https://randomnerdtutorials.com/esp32-web-server-arduino-ide/"> randomnerdtutorials </a> and got the rough code for the website, where I then made some modifications to it so it suited my circuit more. This is a screenshot of what the website looks like:</p>
+
+![website](./website.png)
+
+<p>The ip address for my website was 192.168.0.218 192.168.0.218 </a>, so if you paste it into the server anytime that my code is running, it works to control it provided you're on the same wifi. </p>
+
+
+<center><video height="600px" controls>
+<source src="website.mp4" type="video/mp4" >
+</video> </center>
+
+<p>Finally, here's the code for the website!</p>
+<pre style="height: 500px; overflow: scroll;"><code>
+
+#include &lt;WiFi.h&gt;
+
+int INA = 26;
+int INB = 27;
+
+// Replace with your network credentials
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
+
+// Set web server port number to 80
+WiFiServer server(80);
+
+// Variable to store the HTTP request
+String header;
+
+// Auxiliar variables to store the current output state
+String output26State = "off";
+String output27State = "off";
+
+// Assign output variables to GPIO pins
+const int output26 = 26;
+const int output27 = 27;
+
+// Current time
+unsigned long currentTime = millis();
+// Previous time
+unsigned long previousTime = 0;
+// Define timeout time in milliseconds (example: 2000ms = 2s)
+const long timeoutTime = 2000;
+
+void setup() {
+  Serial.begin(115200);
+  // Initialize the output variables as outputs
+  pinMode(output26, OUTPUT);
+  pinMode(output27, OUTPUT);
+  // Set outputs to LOW
+  digitalWrite(output26, LOW);
+  digitalWrite(output27, LOW);
+
+  // Connect to Wi-Fi network with SSID and password
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  // Print local IP address and start web server
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  server.begin();
+
+  pinMode(INA, OUTPUT);
+  pinMode(INB, OUTPUT);
+}
+
+void loop() {
+  WiFiClient client = server.available();   // Listen for incoming clients
+
+  if (client) {                             // If a new client connects,
+    currentTime = millis();
+    previousTime = currentTime;
+    Serial.println("New Client.");          // print a message out in the serial port
+    String currentLine = "";                // make a String to hold incoming data from the client
+    while (client.connected() && currentTime - previousTime &lt;= timeoutTime) {  // loop while the client's connected
+      currentTime = millis();
+      if (client.available()) {             // if there's bytes to read from the client,
+        char c = client.read();             // read a byte, then
+        Serial.write(c);                    // print it out the serial monitor
+        header += c;
+        if (c == '\n') {                    // if the byte is a newline character
+          // if the current line is blank, you got two newline characters in a row.
+          // that's the end of the client HTTP request, so send a response:
+          if (currentLine.length() == 0) {
+            // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
+            // and a content-type so the client knows what's coming, then a blank line:
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:text/html");
+            client.println("Connection: close");
+            client.println();
+
+            // turns the GPIOs on and off
+            if (header.indexOf("GET /26/on") &gt;= 0) {
+              Serial.println("GPIO 26 on");
+              output26State = "on";
+              digitalWrite(output26, HIGH);
+            } else if (header.indexOf("GET /26/off") &gt;= 0) {
+              Serial.println("GPIO 26 off");
+              output26State = "off";
+              digitalWrite(output26, LOW);
+            } 
+
+            // Display the HTML web page
+            client.println("&lt;!DOCTYPE html&gt;&lt;html&gt;");
+            client.println("&lt;head&gt;&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"&gt;");
+            client.println("&lt;link rel=\"icon\" href=\"data:,\"&gt;");
+            // CSS to style the on/off buttons
+            // Feel free to change the background-color and font-size attributes to fit your preferences
+            client.println("&lt;style&gt;html { font-family: Monospace; display: inline-block; margin: 0px auto; text-align: center;}");
+            client.println(".button { background-color: #FFBDD3; border: none; color: white; padding: 16px 40px; border-radius: 15px;");
+            client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
+            client.println(".button2 {background-color: #555555;}&lt;/style&gt;&lt;/head&gt;");
+
+            // Web Page Heading
+            client.println("&lt;body&gt;&lt;h1&gt;DC MOTOR CONTROL&lt;/h1&gt;");
+
+            // Display current state, and ON/OFF buttons for GPIO 26
+            client.println("&lt;p&gt;The motor is currently " + output26State + "&lt;/p&gt;");
+            // If the output26State is off, it displays the ON button
+            if (output26State == "off") {
+              client.println("&lt;p&gt;&lt;a href=\"/26/on\"&gt;&lt;button class=\"button\"&gt;ON&lt;/button&gt;&lt;/a&gt;&lt;/p&gt;");
+            } else {
+              client.println("&lt;p&gt;&lt;a href=\"/26/off\"&gt;&lt;button class=\"button button2\"&gt;OFF&lt;/button&gt;&lt;/a&gt;&lt;/p&gt;");
+            }
+
+
+            // The HTTP response ends with another blank line
+            client.println();
+            // Break out of the while loop
+            break;
+          } else { // if you got a newline, then clear currentLine
+            currentLine = "";
+          }
+        } else if (c != '\r') {  // if you got anything else but a carriage return character,
+          currentLine += c;      // add it to the end of the currentLine
+        }
+      }
+    }
+    // Clear the header variable
+    header = "";
+    // Close the connection
+    client.stop();
+    Serial.println("Client disconnected.");
+    Serial.println("");
+  }
+}
+
+
+</pre></code>
+
+<p>I was a bit nervous going into this assignment because it seemed so intimidating, but it was fairly straight forward! I enjoyed it a lot.</p>
+
+
+
+</xmp>
+</body>
+
+<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+
+</html>

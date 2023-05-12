@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<title>PHYSCI 70: Intro to Digital Fabrication </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div style="align-items: left; justify-content:left;" class="container-fluid">
+    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+    <div class="navbar-nav">
+      <h4><a class="nav-link" href="../index.html">Home</a></h4>
+      <h4><a class="nav-link" href="../about.html">About</a></h4>
+      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+    </div>
+  </div>
+</nav>
+
+
+<body>
+
+
+<xmp theme="journal" style="display:none;">
+
+
+
+<center><h1>6: Electronic Input Devices</h1></center> 
+
+<p>This weeks assignment was to use a sensor from a kit to measure a physical quantity and calibrate it and to fabricate a sensor using copper tape.</p>
+
+<p>For the first part of the assignment, I chose to design a thermistor. I referenced <a href="https://wujibi123.github.io/PHYS_S-12/07_ElectronicInput/index.html"> this</a> to build the circuit, and then I used the code <a href="https://nathanmelenbrink.github.io/intro-dig-fab/06_input/index.html"> on the website</a> to put into arduino. From there, I had a working circuit!</p>
+
+![]()
+
+<p>However, the serial plotter on arduino was having trouble using the data from the code, so I tweaked it slightly and made it so it only printed the number, not the celcius sign or the "temperature:" part. After that, the graph worked!</p>
+
+![Temp graph](./tempgraph.png)
+
+<p>The dips in the graph are from when I touched ice, then the sensor, and the peaks are when I touched the sensor with warm hands.</p>
+
+<pre><code>
+int ThermistorPin = A0;
+int Vo;
+float R1 = 10000;
+float R2, T;
+float A = 3.354e-03;
+float B = 2.5698e-4;
+
+void setup() {
+  Serial.begin(9600);           
+}
+
+void loop() {
+
+  Vo = analogRead(ThermistorPin);
+  R2 = R1 * 1/(1023.0 / (float)Vo - 1.0);  //Calculate resistance of thermistor from voltage divider math.
+  T = (1.0 / (A + B*log(R2/R1) ));  // Calculate temperature using datasheet formula.
+  T = T - 273.15;                   //Convert from Kelvin to Celcius.
+
+  Serial.println(T);
+
+  delay(500);
+}
+</code></pre> 
+
+![set up](./copper.jpeg)
+
+<h1><center>Second sensor</center></h1>
+
+<p>For the sensor I fabricated, I used copper tape in to make a capacitive sensor, but I accidentally ended up making a touch sensor. This made it so when the copper touched, an LED lit up. It wasn't too challenging wiring this, and I took the code from <a href="https://nathanmelenbrink.github.io/lab/input/capacitance/txrx.html">here</a> and then modified it so there was an if statement for the LED. I had to find the range, and it roughly was between 0-1500. This meant that when it was over 750, the LED was lit up.</p>
+
+<pre><code>
+long result;   //variable for the result of the tx_rx measurement.
+int analog_pin = A3;
+int tx_pin = 4;
+
+
+void setup() {
+  pinMode(tx_pin, OUTPUT);      //Pin 4 provides the voltage step
+  pinMode(13, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  result = tx_rx();
+  Serial.println(result);
+  if (result > 750) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+
+}
+
+
+long tx_rx() {        // Function to execute rx_tx algorithm and return a value
+  // that depends on coupling of two electrodes.
+  // Value returned is a long integer.
+  int read_high;
+  int read_low;
+  int diff;
+  long int sum;
+  int N_samples = 100;    // Number of samples to take.  Larger number slows it down, but reduces scatter.
+
+  sum = 0;
+
+  for (int i = 0; i < N_samples; i++) {
+    digitalWrite(tx_pin, HIGH);             // Step the voltage high on conductor 1.
+    read_high = analogRead(analog_pin);     // Measure response of conductor 2.
+    delayMicroseconds(100);                 // Delay to reach steady state.
+    digitalWrite(tx_pin, LOW);              // Step the voltage to zero on conductor 1.
+    read_low = analogRead(analog_pin);      // Measure response of conductor 2.
+    diff = read_high - read_low;            // desired answer is the difference between high and low.
+    sum += diff;                            // Sums up N_samples of these measurements.
+
+
+  }
+  return sum;
+
+
+}
+</code></pre> 
+
+![Sensor graph](./othergraph.png)
+
+<p>The peaks in the graph is when the copper tape was touching, and the dips were when they were far apart. The graph had a low range of </p>
+
+![temp set up](./thermo.jpeg)
+
+<p>Finally, here's a gif of the LED lighting up!</p>
+
+![GIF](./LED.gif)
+
+</xmp>
+</body>
+
+<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+
+</html>
