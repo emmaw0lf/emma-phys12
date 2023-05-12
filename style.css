@@ -6,13 +6,6 @@ body {
     background-color: white;
   }
 
-p {
-  font-size: 16px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
 
 p {font-size: 16px;}
 .margin {margin-bottom: 15px;}
