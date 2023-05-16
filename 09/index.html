@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PHYSCI 70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+  <title>PHYSCI 70: Intro to Digital Fabrication </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div style="align-items: left; justify-content:left;" class="container-fluid">
-    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
-    </div>
-  </div>
-</nav>
-
+</head>
 
 <body>
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div style="align-items: left; justify-content:left;" class="container-fluid">
+      <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+      <div class="navbar-nav">
+        <h4><a class="nav-link" href="../index.html">Home</a></h4>
+        <h4><a class="nav-link" href="../about.html">About</a></h4>
+        <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+      </div>
+    </div>
+  </nav>
+
+  <center>
+    <h1>9: Radio, Wifi, and Bluetooth</h1>
 
 
-<xmp theme="journal" style="display:none;">
+  <p>This week we needed to control a board from a local wireless network and program a microcontroller to obtain and respond to information from the internet. I wanted to make an on/off button on a website that would control a DC motor. I was a bit scared to start the assignment 
+  </p>
 
+  <p>First I wanted to figure out how to connect the motor to the ESP32 board. I followed <a href="http://www.esp32learning.com/code/esp32-and-l9110-fan-module-example.php"> this tutorial</a> to get a rough idea of how to wire, minus the battery, and it worked when I ran test code.</p>
 
+  <img src="./circuit.png" alt="circuit" />
 
-<center><h1>9: Radio, Wifi, and Bluetooth</h1></center> 
+  <p>Next, I wanted to make the website, so I followed <a href="https://randomnerdtutorials.com/esp32-web-server-arduino-ide/"> randomnerdtutorials </a> and got the rough code for the website, where I then made some modifications to it so it suited my circuit more. This is a screenshot of what the website looks like:</p>
 
-<p>This week we needed to control a board from a local wireless network and program a microcontroller to obtain and respond to information from the internet. I wanted to make an on/off button on a website that would control a DC motor. I was a bit scared to start the assignment 
-</p>
+  <img src="./website.png" alt="website" />
 
-<p>First I wanted to figure out how to connect the motor to the ESP32 board. I followed <a href="http://www.esp32learning.com/code/esp32-and-l9110-fan-module-example.php"> this tutorial</a> to get a rough idea of how to wire, minus the battery, and it worked when I ran test code.</p>
+  <p>The ip address for my website was 192.168.0.218 192.168.0.218 </a>, so if you paste it into the server anytime that my code is running, it works to control it provided you're on the same wifi. </p>
 
-![circuit](./circuit.png)
+  <center>
+    <video height="600px" controls>
+      <source src="website.mp4" type="video/mp4">
+    </video>
+  </center>
 
-<p>Next, I wanted to make the website, so I followed <a href="https://randomnerdtutorials.com/esp32-web-server-arduino-ide/"> randomnerdtutorials </a> and got the rough code for the website, where I then made some modifications to it so it suited my circuit more. This is a screenshot of what the website looks like:</p>
+  <p>Finally, here's the code for the website!</p>
 
-![website](./website.png)
-
-<p>The ip address for my website was 192.168.0.218 192.168.0.218 </a>, so if you paste it into the server anytime that my code is running, it works to control it provided you're on the same wifi. </p>
-
-
-<center><video height="600px" controls>
-<source src="website.mp4" type="video/mp4" >
-</video> </center>
-
-<p>Finally, here's the code for the website!</p>
-<pre style="height: 500px; overflow: scroll;"><code>
-
+  <pre style="height: 500px; overflow: scroll;">
+    <code>
 #include &lt;WiFi.h&gt;
 
 int INA = 26;
@@ -69,7 +67,8 @@ String output27State = "off";
 
 // Assign output variables to GPIO pins
 const int output26 = 26;
-const int output27 = 27;
+const int output27 = 27
+
 
 // Current time
 unsigned long currentTime = millis();
@@ -192,12 +191,9 @@ void loop() {
 
 <p>I was a bit nervous going into this assignment because it seemed so intimidating, but it was fairly straight forward! I enjoyed it a lot.</p>
 
+</center>
 
-
-</xmp>
+ <script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>

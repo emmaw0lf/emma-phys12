@@ -1,91 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<title>PHYSCI 70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style.css" rel="stylesheet">
-
-
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div style="align-items: left; justify-content:left;" class="container-fluid">
-    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
-    </div>
-  </div>
-</nav>
-
+<head>
+    <title>PHYSCI 70: Intro to Digital Fabrication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+</head>
 
 <body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div style="align-items: left; justify-content:left;" class="container-fluid">
+            <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
+            <div class="navbar-nav">
+                <h4><a class="nav-link" href="../index.html">Home</a></h4>
+                <h4><a class="nav-link" href="../about.html">About</a></h4>
+                <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container">
+        <center>
+            <h1>10: Machine Building and End Effectors</h1>
+        </center>
 
-<xmp theme="journal" style="display:none;">
+        <p>This week, the assignment was to make a machine that has at least one stepper motor and to demonstrate you can calibrate its position. I wanted to work on the dispensing mechanism for my final project, and this week was actually what convinced me to use a stepper motor. It's a lot more precise and it would be way easier to time for the different amounts of food to dispense.</p>
 
+        <p>First, I had to code the circuit. I had the DRV8834 Low-Voltage Stepper Driver, and I referenced <a href="https://www.pololu.com/product/2134">the product page</a> for the set up. Here is what I came up with:</p>
 
+        <img src="./circuit.jpeg" alt="circuit" width = "400" height = "350">
 
-<center><h1>10: Machine Building and End Effectors</h1></center> 
+        <p>Next, to code the stepper motor itself. I wanted to make a piece that would open and close depending on the time, so I made a *very* rough design for it. Essentially, the DC motor would hang from somewhere and a dowel connected to the mechanism would spin it.</p>
 
-<p>This week, the assignment was to make a machine that has at least one stepper motor and to demonstrate you can calibrate its position. I wanted to work on the dispensing mechanism for my final project, and this week was actually what convinced me to use a stepper motor. It's a lot more precise and it would be way easier to time for the different amounts of food to dispense.</p>
+        <img src="./dispensing.jpeg" alt="dispensing mechanism" width = "400" height = "350">
 
-<p>First, I had to code the circiut. I had the DRV8834 Low-Voltage Stepper Driver, and I referenced <a href="https://www.pololu.com/product/2134">the product page</a> for the set up. Here is what I came up with:</p>
+        <p>I next had to make the code, which I based off of <a href="https://lastminuteengineers.com/a4988-stepper-motor-driver-arduino-tutorial/">this website</a>.<br> The code is below:</p>
 
-![circuit](./circuit.jpeg)
+        <pre style="height: 500px; overflow: scroll;">
+            <code>
+                // Include the AccelStepper Library
+                #include &lt;AccelStepper.h&gt;
 
+                // Define pin connections
+                const int dirPin = 12;
+                const int stepPin = 13;
 
-<p>Next, to code the stepper motor itself. I wanted to make a piece that would open and close depending on the time, so I made a *very* rough design for it. Essentially, the DC motor would hang from somewhere and a dowel connected to the mechanism would spin it.</p>
+                // Define motor interface type
+                #define motorInterfaceType 1
 
-![mechanism](./dispensing.jpeg)
+                // Creates an instance
+                AccelStepper myStepper(1, stepPin, dirPin);
 
-<p>I next had to make the code, which I based off of <a href = "https://lastminuteengineers.com/a4988-stepper-motor-driver-arduino-tutorial/">this websites</a>. <br> The code is below:</p>
+                void setup() {
+                  pinMode(stepPin, OUTPUT);
+                  pinMode(dirPin, OUTPUT);
+                  myStepper.moveTo(200);
+                }
 
+                void loop() {
+                  digitalWrite(dirPin, HIGH);
+                  for (int x = 0; x &lt; 100; x++)
+                  {
+                    digitalWrite(stepPin, HIGH);
+                    delay(2.5);
+                    digitalWrite(stepPin, LOW);
+                    delay(2.5);
+                  }
+                 
 
-
-<pre style="height: 500px; overflow: scroll;"><code>
-
-// Include the AccelStepper Library
-#include &lt;AccelStepper.h&gt;
-
-// Define pin connections
-const int dirPin = 12;
-const int stepPin = 13;
-
-
-// Define motor interface type
-#define motorInterfaceType 1
-
-// Creates an instance
-AccelStepper myStepper(1, stepPin, dirPin);
-
-void setup() {
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
-  myStepper.moveTo(200);
-}
-
-
-void loop() {
-  digitalWrite(dirPin, HIGH);
-  for (int x = 0; x &lt; 100; x++)
-  {
-    digitalWrite(stepPin, HIGH);
-    delay(2.5);
-    digitalWrite(stepPin, LOW);
-    delay(2.5);
-  }
-  delay(1500);
-  digitalWrite(dirPin, LOW);
-
-  for (int x = 0; x &lt; 100; x++)
-  {
-    digitalWrite(stepPin, HIGH);
-    delay(2.5);
-    digitalWrite(stepPin, LOW);
-    delay(2.5);
-  }
-  delay(1500);
-}
+                }
+                delay(1500);
+              }     
 
 </code></pre>
 
@@ -96,10 +81,7 @@ void loop() {
 </video> </center>
 
 
-</xmp>
+ <script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
