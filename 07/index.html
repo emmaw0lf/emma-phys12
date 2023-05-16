@@ -1,117 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>PHYSCI 70: Intro to Digital Fabrication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style.css" rel="stylesheet">
+  </head>
 
-<title>PHYSCI 70: Intro to Digital Fabrication </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style.css" rel="stylesheet">
+  <body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <div style="align-items: left; justify-content:left;" class="container-fluid">
+        <h3 style="margin: 15px">PHYSCI 70: Intro to Digital Fabrication</h3>
+        <div class="navbar-nav">
+          <h4><a class="nav-link" href="../index.html">Home</a></h4>
+          <h4><a class="nav-link" href="../about.html">About</a></h4>
+          <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
+        </div>
+      </div>
+    </nav>
 
+    <center><h1>7: Electronic Output Devices</h1></center>
 
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div style="align-items: left; justify-content:left;" class="container-fluid">
-    <h3 style="margin: 15px"> PHYSCI 70: Intro to Digital Fabrication</h3>
-    <div class="navbar-nav">
-      <h4><a class="nav-link" href="../index.html">Home</a></h4>
-      <h4><a class="nav-link" href="../about.html">About</a></h4>
-      <h4><a class="nav-link" href="../finalproject.html">Final Project</a></h4>
-    </div>
-  </div>
-</nav>
+    <p>
+      This weeks assignment was to use an output device that you haven't used before today, to write a microcontroller program that integrates at least one input device and one output device, use an oscilloscope to discover the time domain at which the output device is operating, and to prepare a CAD file for CNC.
+    </p>
 
+    <h1><center>Part 1</center></h1>
 
-<body>
+    <p>
+      I decided to experiment with a TFT display, and I wanted to hook it up to the sensor I made last class. Specficially, I wanted to make the display change colors when the sensors were close. It was a little bit of a learning curve to understand the Adafruit display. Eventually I found the code to change the background color, and I wanted to change it into a class for the assignment. After tinkering for a bit, the class I came up with was:
+    </p>
 
-
-<xmp theme="journal" style="display:none;">
-
-
-
-<center><h1>7: Electronic Output Devices</h1></center> 
-
-<p>This weeks assignment was to use an output device that you haven't used before today, to
-write a microcontroller program that integrates at least one input device and one output device, use an oscilloscope to discover the time domain at which the output device is operating, and to prepare a CAD file for CNC.</p>
-
-<h1><center>Part 1</center></h1>
-
-<p>I decided to experiment with a TFT display, and I wanted to hook it up to the sensor I made last class. Specficially, I wanted to make the display change colors when the sensors were close. It was a little bit of a learning curve to understand the Adafruit display. Eventually I found the code to change the background color, and I wanted to change it into a class for the assignment. After tinkering for a bit, the class I came up with was:</p>
-
-<pre><code>
-
+    <pre><code>
 class Background
 {
   public:
-  int bgColor;
-  void screen(int color) {
-    tft.fillScreen(color);
-  }
-  Background(int);
-}
-;
+    int bgColor;
+    void screen(int color) {
+      tft.fillScreen(color);
+    }
+    Background(int);
+};
 
 Background::Background(int backgroundColor): bgColor(backgroundColor) {
-  
+
 }
 
-</code></pre>
-
-<p> After that, it was a matter of combining the input code with the Adafruit.</p>
-
-<pre><code>
-///initializing some things
+// initializing some things
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 int red = ST77XX_RED;
 int blue = ST77XX_BLUE;
-
-//then the class
-
-class Background
-{
-  public:
-  int bgColor;
-  void screen(int color) {
-    tft.fillScreen(color);
-  }
-  Background(int);
-}
-;
-
-Background::Background(int backgroundColor): bgColor(backgroundColor) {
-  
-}
-
-
-//then some more things
-long result;   //variable for the result of the tx_rx measurement.
+long result; // variable for the result of the tx_rx measurement.
 int analog_pin = A3;
 int tx_pin = 4;
 Background bg = Background(red);
+    </code></pre>
 
-</code></pre>
-<p> Now, I referenced the Adafruit libraries graphics test for this, so I had to be careful with the code I modified. So, for my void setup, I had:</p>
+    <p>
+      Now, I referenced the Adafruit libraries graphics test for this, so I had to be careful with the code I modified. So, for my void setup, I had:
+    </p>
 
-<pre><code>
-
+    <pre><code>
 void setup(void) {
   Serial.begin(9600);
   Serial.print(F("Hello! ST77xx TFT Test"));
-  pinMode(tx_pin, OUTPUT);    
+  pinMode(tx_pin, OUTPUT);
   pinMode(13, OUTPUT);
   Serial.begin(9600);
-  tft.init(135, 240);         
-
+  tft.init(135, 240);
   Serial.println(F("Initialized"));
-
   uint16_t time = millis();
   tft.fillScreen(ST77XX_BLACK);
   time = millis() - time;
-
   Serial.println(time, DEC);
   delay(500);
-
 }
+    </code></pre>
 
-</code></pre>
-
-<p>Finally, the if statement to change the screen.</p>
+    <p>
+      Finally, the if statement to change the screen.</p>
 
 <pre><code>
   void loop() {
@@ -130,13 +96,15 @@ void setup(void) {
 
 <p>There was a lot more to the code, but there is only so much I can include. The link to the Arduino code is <a download href="./week_7/week_7.ino">here</a>. Here's a gif of the sensor in action!</p>
 
-![sensor](./sensor.gif)
+ <img src="./sensor.gif" alt="sensor">
+
 
 <h1><center>Part 2</center></h1>
 
-<p>Next there was using and reading the oscilloscope. Here is the photo of it:<br></p>
+<p>Next there was using and reading the oscilloscope. Here is the photo of it:</p>
 
-![machine](./machine.png)
+<img src="./machine.png" alt="machine">
+
 
 <p>From this photo, I figured out the output device was operating on a fixed clock. The speed/frequency of it was 3.27 MHz, and the time domain it operated on was 24 nanoseconds. Reading the oscilloscope was intimidating at first, but it was easier to understand after I looked around on the internet for how it worked.</p>
 
@@ -145,10 +113,8 @@ void setup(void) {
 
 <p>Finally, there was the file to make for CNC milling next class. I designed a small circular tray for rings or jewlery, but I don't know if the file will work yet. It is <a download href="./milling.stl">here</a>, but I'm still planning on updating it during next class.</p>
 
-</xmp>
+
+ <script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
-
 </html>
